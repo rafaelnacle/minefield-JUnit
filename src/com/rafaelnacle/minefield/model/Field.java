@@ -17,4 +17,24 @@ public class Field {
         this.row = row;
         this.column = column;
     }
+
+    boolean addNeighbour(Field neighbour) {
+        boolean differentRow = row != neighbour.row;
+        boolean differentColumn = column != neighbour.column;
+        boolean diagonal = differentRow && differentColumn;
+
+        int deltaRow = Math.abs(row - neighbour.row);
+        int deltaColumn = Math.abs(column - neighbour.column);
+        int deltaMain = deltaColumn + deltaRow;
+
+        if (deltaMain == 1 && !diagonal) {
+            neighbours.add(neighbour);
+            return true;
+        } else if (deltaMain == 2 && diagonal) {
+            neighbours.add(neighbour);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
