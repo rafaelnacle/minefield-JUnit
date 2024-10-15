@@ -75,4 +75,12 @@ public class Field {
     public boolean isFlagged() {
         return flagged;
     }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public boolean isClosed() {
+        return !isOpen();
+    }
 }
