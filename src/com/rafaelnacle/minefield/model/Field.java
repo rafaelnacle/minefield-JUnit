@@ -10,7 +10,7 @@ public class Field {
     private final int column;
 
     private boolean open;
-    private boolean undermined;
+    private boolean mined;
     private boolean flagged;
 
     private List<Field> neighbours = new ArrayList<>();
@@ -50,7 +50,7 @@ public class Field {
         if (!open && !flagged) {
             open = true;
 
-            if (undermined) {
+            if (mined) {
                 throw new ExplosionException();
             }
 
@@ -65,7 +65,11 @@ public class Field {
     }
 
     boolean safeNeighbourhood() {
-        return neighbours.stream().noneMatch(n -> n.undermined);
+        return neighbours.stream().noneMatch(n -> n.mined);
+    }
+
+    void mine() {
+        mined = true;
     }
 
     public boolean isFlagged() {
