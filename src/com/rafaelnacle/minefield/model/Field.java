@@ -1,5 +1,7 @@
 package com.rafaelnacle.minefield.model;
 
+import com.rafaelnacle.minefield.exception.ExplosionException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,5 +38,33 @@ public class Field {
         } else {
             return false;
         }
+    }
+
+    void toggleFlagging() {
+        if(!open) {
+            flagged = !flagged;
+        }
+    }
+
+    boolean open() {
+        if (!open && !flagged) {
+            open = true;
+
+            if (undermined) {
+                throw new ExplosionException();
+            }
+
+            if (safeNeighbourhood()) {
+                neighbours.forEach(Field::open);
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    boolean safeNeighbourhood() {
+        return neighbours.stream().noneMatch(n -> n.undermined);
     }
 }
