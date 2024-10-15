@@ -67,4 +67,8 @@ public class Field {
     boolean safeNeighbourhood() {
         return neighbours.stream().noneMatch(n -> n.undermined);
     }
+
+    public boolean isFlagged() {
+        return flagged;
+    }
 }
