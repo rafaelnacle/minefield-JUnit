@@ -83,4 +83,43 @@ public class Field {
     public boolean isClosed() {
         return !isOpen();
     }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    boolean achievedObjective() {
+        boolean unraveled = !mined && open;
+        boolean protectedField = mined && flagged;
+
+        return unraveled || protectedField;
+    }
+
+    long minesInNeighbourhood() {
+        return neighbours.stream().filter(v -> v.mined).count();
+    }
+
+    void reset() {
+        open = false;
+        mined = false;
+        flagged = false;
+    }
+
+    public String toString() {
+        if (flagged) {
+            return "x";
+        } else if (open && mined){
+            return "*";
+        } else if (open && minesInNeighbourhood() > 0) {
+            return Long.toString(minesInNeighbourhood());
+        } else if (open) {
+            return " ";
+        } else {
+            return "?";
+        }
+    }
 }
