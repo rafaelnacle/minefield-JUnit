@@ -129,4 +129,88 @@ public class FieldTest {
 
         assertTrue(field22.isOpen() && field11.isClosed());
     }
+
+    @Test
+    void testAchievedObjectiveUnminedAndOpen() {
+        field.open();
+        assertTrue(field.achievedObjective());
+    }
+
+    @Test
+    void testAchievedObjectiveMinedAndFlagged() {
+        field.mine();
+        field.toggleFlagging();
+        assertTrue(field.achievedObjective());
+    }
+
+    @Test
+    void testAchievedObjectiveNotAchieved() {
+        field.mine();
+        assertFalse(field.achievedObjective());
+    }
+
+    @Test
+    void testSafeNeighbourhoodTrue() {
+        Field neighbour1 = new Field(2, 2);
+        Field neighbour2 = new Field(2, 3);
+        field.addNeighbour(neighbour1);
+        field.addNeighbour(neighbour2);
+
+        assertTrue(field.safeNeighbourhood());
+    }
+
+    @Test
+    void testSafeNeighbourhoodFalse() {
+        Field minedNeighbour = new Field(2, 2);
+        minedNeighbour.mine();
+        field.addNeighbour(minedNeighbour);
+
+        assertFalse(field.safeNeighbourhood());
+    }
+
+    @Test
+    void testResetField() {
+        field.mine();
+        field.toggleFlagging();
+        field.open();
+        field.reset();
+
+        assertFalse(field.isOpen());
+        assertFalse(field.isFlagged());
+        assertTrue(field.isClosed());
+    }
+
+    @Test
+    void testToStringFlagged() {
+        field.toggleFlagging();
+        assertEquals("x", field.toString());
+    }
+
+    @Test
+    void testToStringMinedAndOpen() {
+        field.mine();
+        field.open();
+        assertEquals("*", field.toString());
+    }
+
+    @Test
+    void testToStringOpenWithMinedInNeighbourhood() {
+        Field neighbour = new Field(3, 2);
+        neighbour.mine();
+        field.addNeighbour(neighbour);
+
+        field.open();
+        assertEquals("1", field.toString());
+    }
+
+    @Test
+    void testToStringOpenWithNoMinesInNeighbourhood() {
+        field.open();
+        assertEquals(" ", field.toString());
+    }
+
+    @Test
+    void testToStringClosed() {
+        assertEquals("?", field.toString());
+    }
 }
