@@ -2,6 +2,7 @@ package com.rafaelnacle.minefield.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class Board {
     private int rows;
@@ -36,6 +37,23 @@ public class Board {
     }
 
     private void sortMines() {
+        long plantedMines = 0;
 
+        Predicate<Field> mined = f -> f.isMined();
+
+        do {
+            plantedMines = fields.stream().filter(mined).count();
+            int random = (int) (Math.random() * fields.size());
+            fields.get(random).mine();
+        } while (plantedMines < mines);
+    }
+
+    public boolean achievedObjective() {
+        return fields.stream().allMatch(f -> f.achievedObjective());
+    }
+
+    public void reset() {
+        fields.stream().forEach(f -> f.reset());
+        sortMines();
     }
 }
