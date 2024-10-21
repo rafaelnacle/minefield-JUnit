@@ -72,6 +72,10 @@ public class Field {
         mined = true;
     }
 
+    public boolean isMined() {
+        return mined;
+    }
+
     public boolean isFlagged() {
         return flagged;
     }
