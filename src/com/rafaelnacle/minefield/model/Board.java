@@ -20,6 +20,20 @@ public class Board {
         sortMines();
     }
 
+    public void open(int row, int column) {
+        fields.parallelStream()
+                .filter(f -> f.getRow() == row && f.getColumn() == column)
+                .findFirst()
+                .ifPresent(f -> f.open());
+    }
+
+    public void toggleFlagging(int row, int column) {
+        fields.parallelStream()
+                .filter(f -> f.getRow() == row && f.getColumn() == column)
+                .findFirst()
+                .ifPresent(f -> f.toggleFlagging());
+    }
+
     private void generateFields() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -55,5 +69,23 @@ public class Board {
     public void reset() {
         fields.stream().forEach(f -> f.reset());
         sortMines();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        int i = 0;
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                sb.append(" ");
+                sb.append(fields.get(i));
+                sb.append(" ");
+                i++;
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 }
