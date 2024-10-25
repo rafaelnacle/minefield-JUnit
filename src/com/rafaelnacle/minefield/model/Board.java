@@ -63,9 +63,9 @@ public class Board {
         Predicate<Field> mined = f -> f.isMined();
 
         do {
-            plantedMines = fields.stream().filter(mined).count();
             int random = (int) (Math.random() * fields.size());
             fields.get(random).mine();
+            plantedMines = fields.stream().filter(mined).count();
         } while (plantedMines < mines);
     }
 

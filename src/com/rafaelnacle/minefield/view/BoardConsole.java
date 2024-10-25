@@ -60,7 +60,7 @@ public class BoardConsole {
                     board.toggleFlagging(rowColumn.next(), rowColumn.next());
                 }
             }
-
+            System.out.println(board);
             System.out.println("You win!");
         } catch (ExplosionException e) {
             System.out.println(board);
