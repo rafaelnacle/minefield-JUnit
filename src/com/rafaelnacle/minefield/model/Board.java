@@ -1,5 +1,7 @@
 package com.rafaelnacle.minefield.model;
 
+import com.rafaelnacle.minefield.exception.ExplosionException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -21,10 +23,15 @@ public class Board {
     }
 
     public void open(int row, int column) {
-        fields.parallelStream()
-                .filter(f -> f.getRow() == row && f.getColumn() == column)
-                .findFirst()
-                .ifPresent(f -> f.open());
+        try {
+            fields.parallelStream()
+                    .filter(f -> f.getRow() == row && f.getColumn() == column)
+                    .findFirst()
+                    .ifPresent(f -> f.open());
+        } catch (ExplosionException e) {
+            fields.forEach(f -> f.setOpen(true));
+            throw e;
+        }
     }
 
     public void toggleFlagging(int row, int column) {
